@@ -1,0 +1,40 @@
+service: service-name
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iam:
+    role: ${env:ROLE} 
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 512
+  apiGateway:
+    restApiId: ${env:REST_API_ID}
+    restApiRootResourceId: ${env:REST_API_ROOT_RESOURCE_ID}
+    restApiResources:
+      /v1: ${env:REST_API_ROOT_RESOURCE_V1_ID}
+  environment:
+    LOG_LEVEL: ${env:LOG_LEVEL}
+
+useDotenv: true
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-plugin-optimize
+
+functions:
+
+  documentValidation:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          path: /example/{name}
+          method: get
+          request: 
+            parameters: 
+              paths: 
+                code: true
