@@ -25,6 +25,16 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin
   - serverless-plugin-optimize
+  - serverless-dynamodb-local
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 7000
+      inMemory: true
 
 functions:
 
@@ -38,3 +48,17 @@ functions:
             parameters: 
               paths: 
                 code: true
+
+  createEstudo:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          path: /estudo
+          method: post
+  
+  getEstudo:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          path: /estudo
+          method: get

@@ -5,6 +5,8 @@
 .env
 junit.xml
 .serverless
+.dynamodb
+docker
 
 # Logs
 logs
